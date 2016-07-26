@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drawing\SimpleDrawing.cs" />
+    <Compile Include="Drawing\TraceDrawing.cs" />
     <Compile Include="Engine\DrawingEngine.cs" />
     <Compile Include="Interfaces\IDrawCommand.cs" />
     <Compile Include="Interfaces\IEngine.cs" />

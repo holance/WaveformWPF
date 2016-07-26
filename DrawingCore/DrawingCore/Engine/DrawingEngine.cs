@@ -71,7 +71,7 @@ namespace DrawingCore.Engine
             var session = args.DrawingSession;
             while(mJobs.TryDequeue(out cmd))
             {
-                cmd.Draw(session);
+                cmd.Draw(sender, session);
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace DrawingCore.Interfaces
 {
     public interface IDrawCommand
     {
-        void Draw(CanvasDrawingSession session);
+        void Draw(CanvasControl canvas, CanvasDrawingSession session);
     }
 }
