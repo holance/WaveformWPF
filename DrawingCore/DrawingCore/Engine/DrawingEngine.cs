@@ -31,13 +31,16 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Graphics.Canvas;
 using DrawingCore.Interfaces;
 using Windows.UI.Xaml.Controls;
+using Windows.UI;
+using System.Collections.Concurrent;
 
 namespace DrawingCore.Engine
 {
     public class DrawingEngine: IEngine
     {
         private CanvasControl mCanvas = null;
-
+        private ConcurrentQueue<IDrawCommand> mJobs = new ConcurrentQueue<IDrawCommand>();
+        private bool mAttached = false;
         public DrawingEngine()
         {
         }
@@ -50,6 +53,7 @@ namespace DrawingCore.Engine
                 mCanvas = canvas as CanvasControl;
                 mCanvas.CreateResources += MCanvas_CreateResources;
                 mCanvas.Draw += MCanvas_Draw;
+                mAttached = true;
             }
             else
             {
@@ -63,16 +67,42 @@ namespace DrawingCore.Engine
 
         private void MCanvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            
+            IDrawCommand cmd = null;
+            var session = args.DrawingSession;
+            while(mJobs.TryDequeue(out cmd))
+            {
+                cmd.Draw(session);
+            }
         }
 
         public void DetachCanvas()
         {
             if (mCanvas != null)
             {
+                mAttached = false;
                 mCanvas.CreateResources -= MCanvas_CreateResources;
                 mCanvas.Draw -= MCanvas_Draw;
+                mCanvas = null;              
             }
+        }
+
+        public bool PushJob(IDrawCommand cmd)
+        {
+            if (!mAttached)
+            {
+                return false;
+            }
+            mJobs.Enqueue(cmd);
+            return true;
+        }
+
+        public void Invalidate()
+        {
+            if (!mAttached)
+            {
+                return;
+            }
+            mCanvas.Invalidate();
         }
     }
 }

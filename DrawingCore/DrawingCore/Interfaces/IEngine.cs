@@ -12,5 +12,9 @@ namespace DrawingCore.Interfaces
         void AttachCanvas(UserControl canvas);
 
         void DetachCanvas();
+
+        void Invalidate();
+
+        bool PushJob(IDrawCommand cmd);
     }
 }
