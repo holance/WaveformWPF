@@ -8,12 +8,12 @@
     xmlns:win2d="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <win2d:CanvasVirtualControl x:Name="canvas" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></win2d:CanvasVirtualControl>
+        <win2d:CanvasVirtualControl x:Name="canvas" ClearColor="Transparent" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></win2d:CanvasVirtualControl>
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Button Height="30" Click="Button_Click">Clear</Button>
         </StackPanel>
