@@ -32,6 +32,7 @@ using DrawingCore.Interfaces;
 using Windows.UI.Xaml.Controls;
 using System.Collections.Concurrent;
 using Windows.Foundation;
+using Windows.UI;
 
 namespace DrawingCore.Engine
 {
@@ -120,6 +121,12 @@ namespace DrawingCore.Engine
                 return;
             }
             mCanvas.Invalidate(rect);
+        }
+
+        public void Clear(Color color)
+        {
+            mCanvas.ClearColor = color;
+            mCanvas.Invalidate();
         }
     }
 }

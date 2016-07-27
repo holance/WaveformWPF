@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -37,6 +38,7 @@ namespace DrawingCoreTester
             mTimer.Interval = TimeSpan.FromMilliseconds(20);
         }
 
+        private byte[] buffer = new byte[1];
         private void Timer_Tick(object sender, object e)
         {
             var rect = new Rect(mRnd.Next(0, (int)canvas.ActualWidth - 400), mRnd.Next(0, (int)canvas.ActualHeight - 400), 400, 400);
@@ -46,6 +48,8 @@ namespace DrawingCoreTester
                 cmd.Width = mRnd.Next(5, (int)rect.Width);
                 cmd.Height = mRnd.Next(5, (int)rect.Height);
                 cmd.Center = new System.Numerics.Vector2(mRnd.Next((int)rect.Left, (int)(rect.Left+rect.Width)), mRnd.Next((int)rect.Left, (int)(rect.Left + rect.Width)));
+                mRnd.NextBytes(buffer);
+                cmd.Color = ColorHelper.FromArgb(buffer[0], buffer[0], buffer[0], buffer[0]);
                 mDrawingEngine.PushJob(cmd);
             }
             mDrawingEngine.Invalidate(rect);
@@ -61,6 +65,11 @@ namespace DrawingCoreTester
         {
             mDrawingEngine.AttachCanvas(canvas);
             mTimer.Start();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            mDrawingEngine.Clear(Colors.Black);
         }
     }
 }

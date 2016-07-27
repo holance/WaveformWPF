@@ -9,6 +9,13 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <win2d:CanvasVirtualControl x:Name="canvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></win2d:CanvasVirtualControl>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <win2d:CanvasVirtualControl x:Name="canvas" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></win2d:CanvasVirtualControl>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Button Height="30" Click="Button_Click">Clear</Button>
+        </StackPanel>
     </Grid>
 </Page>

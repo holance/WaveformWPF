@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.Xaml.Controls;
 
 namespace DrawingCore.Interfaces
@@ -17,6 +18,8 @@ namespace DrawingCore.Interfaces
         void Invalidate();
 
         void Invalidate(Rect rect);
+
+        void Clear(Color color);
 
         bool PushJob(IDrawCommand cmd);
     }
