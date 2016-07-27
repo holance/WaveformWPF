@@ -8,6 +8,7 @@ using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using GalaSoft.MvvmLight;
 using Windows.UI;
+using Windows.Foundation;
 
 namespace DrawingCore.Drawing
 {
@@ -98,7 +99,7 @@ namespace DrawingCore.Drawing
         }
 
         public float AxisX { set; get; }
-        public void Draw(CanvasControl canvas, CanvasDrawingSession session)
+        public void Draw(double canvasWidth, double canvasHeight, CanvasDrawingSession session, Rect rect)
         {
             if (DrawStart >= DrawEnd)
             {

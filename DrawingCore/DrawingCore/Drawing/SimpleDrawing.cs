@@ -9,6 +9,7 @@ using System.Numerics;
 using Microsoft.Graphics.Canvas.Brushes;
 using Windows.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+using Windows.Foundation;
 
 namespace DrawingCore.Drawing
 {
@@ -28,9 +29,9 @@ namespace DrawingCore.Drawing
             Height = 10;
             Center = new Vector2(5, 5);
         }
-        public void Draw(CanvasControl canvas, CanvasDrawingSession session)
+        public void Draw(double canvasWidth, double canvasHeight, CanvasDrawingSession session, Rect rect)
         {
-            session.DrawEllipse(Center, Width, Height, Color, 2);
+            session.DrawEllipse(Center, Width, Height, Color, 2);        
         }
     }
 }

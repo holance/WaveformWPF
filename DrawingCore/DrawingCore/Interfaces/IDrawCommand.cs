@@ -5,11 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 
 namespace DrawingCore.Interfaces
 {
     public interface IDrawCommand
     {
-        void Draw(CanvasControl canvas, CanvasDrawingSession session);
+        void Draw(double canvasWidth, double canvasHeight, CanvasDrawingSession session, Rect rect);
     }
 }

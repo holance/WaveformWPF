@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 
 namespace DrawingCore.Interfaces
@@ -14,6 +15,8 @@ namespace DrawingCore.Interfaces
         void DetachCanvas();
 
         void Invalidate();
+
+        void Invalidate(Rect rect);
 
         bool PushJob(IDrawCommand cmd);
     }

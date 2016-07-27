@@ -9,6 +9,6 @@
     mc:Ignorable="d">
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <win2d:CanvasControl x:Name="canvas"></win2d:CanvasControl>
+        <win2d:CanvasVirtualControl x:Name="canvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"></win2d:CanvasVirtualControl>
     </Grid>
 </Page>

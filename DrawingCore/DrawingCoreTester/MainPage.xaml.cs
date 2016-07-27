@@ -39,15 +39,16 @@ namespace DrawingCoreTester
 
         private void Timer_Tick(object sender, object e)
         {
-            for(int i=0; i<1000; ++i)
+            var rect = new Rect(mRnd.Next(0, (int)canvas.ActualWidth - 400), mRnd.Next(0, (int)canvas.ActualHeight - 400), 400, 400);
+            for (int i=0; i<100; ++i)
             {
                 var cmd = new SimpleDrawing();
-                cmd.Width = mRnd.Next(5, 100);
-                cmd.Height = mRnd.Next(5, 100);
-                cmd.Center = new System.Numerics.Vector2(mRnd.Next(0, 1000), mRnd.Next(0, 1000));
+                cmd.Width = mRnd.Next(5, (int)rect.Width);
+                cmd.Height = mRnd.Next(5, (int)rect.Height);
+                cmd.Center = new System.Numerics.Vector2(mRnd.Next((int)rect.Left, (int)(rect.Left+rect.Width)), mRnd.Next((int)rect.Left, (int)(rect.Left + rect.Width)));
                 mDrawingEngine.PushJob(cmd);
             }
-            mDrawingEngine.Invalidate();
+            mDrawingEngine.Invalidate(rect);
         }
 
         private void MainPage_Unloaded(object sender, RoutedEventArgs e)

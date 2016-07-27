@@ -28,17 +28,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using Microsoft.Graphics.Canvas;
 using DrawingCore.Interfaces;
 using Windows.UI.Xaml.Controls;
-using Windows.UI;
 using System.Collections.Concurrent;
+using Windows.Foundation;
 
 namespace DrawingCore.Engine
 {
     public class DrawingEngine: IEngine
     {
-        private CanvasControl mCanvas = null;
+        private CanvasVirtualControl  mCanvas = null;
         private ConcurrentQueue<IDrawCommand> mJobs = new ConcurrentQueue<IDrawCommand>();
         private bool mAttached = false;
         public DrawingEngine()
@@ -48,32 +47,41 @@ namespace DrawingCore.Engine
         public void AttachCanvas(UserControl canvas)
         {
             DetachCanvas();
-            if(canvas is CanvasControl)
+            if(canvas is CanvasVirtualControl )
             {
-                mCanvas = canvas as CanvasControl;
+                mCanvas = canvas as CanvasVirtualControl ;
                 mCanvas.CreateResources += MCanvas_CreateResources;
-                mCanvas.Draw += MCanvas_Draw;
+                mCanvas.RegionsInvalidated += MCanvas_RegionsInvalidated;
                 mAttached = true;
             }
             else
             {
-                throw new ArgumentException("Argument only accepts CanvasControl.");
+                throw new ArgumentException("Argument only accepts CanvasVirtualControl .");
             }
         }
 
-        private void MCanvas_CreateResources(CanvasControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
-        {
-        }
-
-        private void MCanvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
-        {
-            IDrawCommand cmd = null;
-            var session = args.DrawingSession;
-            while(mJobs.TryDequeue(out cmd))
+        private void MCanvas_RegionsInvalidated(CanvasVirtualControl sender, CanvasRegionsInvalidatedEventArgs args)
+        {           
+            if (args.InvalidatedRegions != null && args.InvalidatedRegions.Length > 0)
             {
-                cmd.Draw(sender, session);
+                IDrawCommand cmd = null;
+                int nJobs = mJobs.Count;
+                var rect = args.InvalidatedRegions[0];
+                using (var session = sender.CreateDrawingSession(rect))
+                {
+                    while (nJobs > 0 && mJobs.TryDequeue(out cmd))
+                    {
+                        --nJobs;
+                        cmd.Draw(sender.Width, sender.Height, session, rect);
+                    }
+                }  
             }
         }
+
+        private void MCanvas_CreateResources(CanvasVirtualControl  sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
+        {
+        }
+
 
         public void DetachCanvas()
         {
@@ -81,7 +89,7 @@ namespace DrawingCore.Engine
             {
                 mAttached = false;
                 mCanvas.CreateResources -= MCanvas_CreateResources;
-                mCanvas.Draw -= MCanvas_Draw;
+                mCanvas.RegionsInvalidated -= MCanvas_RegionsInvalidated;
                 mCanvas = null;              
             }
         }
@@ -103,6 +111,15 @@ namespace DrawingCore.Engine
                 return;
             }
             mCanvas.Invalidate();
+        }
+
+        public void Invalidate(Rect rect)
+        {
+            if (!mAttached)
+            {
+                return;
+            }
+            mCanvas.Invalidate(rect);
         }
     }
 }
